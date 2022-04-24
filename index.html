@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DemaciaJustice</title>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="./vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .box {
+        width: 308px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .item {
+        display: flex;
+        width: 308px;
+    }
+
+    .title {
+        width: 128px;
+        height: 40px;
+        line-height: 40px;
+        color: #606266;
+    }
+
+    .el-input,
+    .el-input__inner {
+        width: 180px;
+    }
+
+    .el-input.is-disabled .el-input__inner {
+        text-align: center;
+        color: #606266;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <div class="box">
+            <div class="item">
+                <div class="title">盖伦的大招等级：</div>
+                <el-input-number v-model="skill_level" :min="1" :max="3"></el-input-number>
+            </div>
+            <div class="item">
+                <div class="title">敌人的总共血量：</div>
+                <el-input-number v-model="blood_volume" :min="150"></el-input-number>
+            </div>
+            <div class="item">
+                <div class="title">当前的斩杀血线：</div>
+                <el-input disabled v-model="kill_line">{{result}}</el-input>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                skill_level: 1,
+                blood_volume: 150,
+                kill_line: "",
+                basic_injury: "",
+                percentage: "",
+            }
+        },
+        computed: {
+            result() {
+                switch (this.skill_level) {
+                    case 1: {
+                        this.basic_injury = 150;
+                        this.percentage = 0.25;
+                        break
+                    }
+                    case 2: {
+                        this.basic_injury = 300;
+                        this.percentage = 0.3;
+                        break
+                    }
+                    case 3: {
+                        this.basic_injury = 450;
+                        this.percentage = 0.35;
+                        break
+                    }
+                };
+                for (this.kill_line = this.blood_volume; this.basic_injury + (this.blood_volume - this.kill_line) * this.percentage < this.kill_line; this.kill_line--);
+                return this.kill_line;
+            }
+        },
+    })
+</script>
+
+</html>
